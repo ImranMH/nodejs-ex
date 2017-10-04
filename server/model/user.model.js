@@ -8,7 +8,7 @@ var UserSchema = new Schema({
     userId    : ObjectId,
     username     : String,
     password      : String,
-    email      : String
+    city      : String
 	});
 
 	// UserSchema.methods.generateHash = function (password) {

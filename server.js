@@ -5,14 +5,17 @@ var express = require('express'),
 
 
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
 const env     = process.env;
 // const port    = env.NODE_PORT || 3000
 // const ip    = env.NODE_IP || 'localhost'
-    
+ var UserModel = require('./server/model/user.model')   
 Object.assign=require('object-assign')
 
 app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: false}))
 
 //var register = require('./register')
 
@@ -42,9 +45,9 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
   }
 }
 
- var connectingString = 'mongodb://127.0.0.1:27017/test'
- if (env.OPENSHIFT_MONGODB_DB_URL) {
-  connectingString = mongoURLLabel
+ var connectingString = 'mongodb://127.0.0.1:27017/test4'
+ if (env.OPENSHIFT_MONGODB_DB_URL || env.MONGODB_PORT) {
+  connectingString = env.MONGODB_PORT
  }
 mongoose.connect(connectingString,{
   useMongoClient: true,
@@ -89,11 +92,29 @@ app.get('/', function (req, res) {
    res.render('index.html');
 });
 
-app.get('/pagecount', function (req, res) {
+app.post('/adduser', function (req, res) {
   // try to initialize the db on every request if it's not already
-   res.json(req.body)
+  var newUser = new UserModel({
+    username: req.body.username,
+    city: req.body.city,
+    password: req.body.password
+  })  
+  newUser.save((err, user)=>{
+    if (err) console.log(err);
+    res.json(user)
+  })
 });
 
+app.get('/user', function (req, res) {
+  // try to initialize the db on every request if it's not already
+ UserModel.find({}, (err, user)=>{
+  if (err) console.log(err);
+
+   res.json(user)
+ })
+  
+  
+});
 
 app.get('/process', function (req, res) {
   // try to initialize the db on every request if it's not already
