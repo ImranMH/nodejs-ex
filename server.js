@@ -19,7 +19,7 @@ app.use(morgan('combined'))
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
-    mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/test',
+    mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL ,
     mongoURLLabel = "";
 
 if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
@@ -44,12 +44,15 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 
  var connectingString = 'mongodb://127.0.0.1:27017/test'
  if (env.OPENSHIFT_MONGODB_DB_URL) {
-  connectingString = env.OPENSHIFT_MONGODB_DB_URL
+  connectingString = mongoURLLabel
  }
-mongoose.connect(connectingString);
+mongoose.connect(connectingString,{
+  useMongoClient: true,
+  /* other options */
+});
 var db = mongoose.connection;
 db.on('connect',()=>{
-  console.log("database connevted at "+connectingString);
+  console.log("database connevted at "+ connectingString);
 })
 
 /*
@@ -88,7 +91,7 @@ app.get('/', function (req, res) {
 
 app.get('/pagecount', function (req, res) {
   // try to initialize the db on every request if it's not already
-   res.json()
+   res.json(req.body)
 });
 
 
