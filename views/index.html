@@ -283,7 +283,7 @@ $ git push</pre>
                     <li><a href="http://git-scm.com/documentation">Git documentation</a></li>
                   </ul>
 
-                <h2>Request information</h2>
+                <h2>Request information edited by imran</h2>
                 <p>Page view count:
                 <% if (pageCountMessage) { %>
                    <span class="code" id="count-value"><%=pageCountMessage%></span>
@@ -292,6 +292,9 @@ $ git push</pre>
                       <table style='margin-left: 20px'>
                           <tr><td>Type:</td><td><%= dbInfo.type %></td></tr>
                           <tr><td>URL:</td><td><%= dbInfo.url %></td></tr>
+                          <tr><td>host:</td><td><%= dbInfo.mongoHost %></td></tr>
+                          <tr><td>port:</td><td><%= dbInfo.port %></td></tr>
+                          <tr><td>mongoURL:</td><td><%= dbInfo.mongoURL %></td></tr>
                       </table>
                     </div>
                 <% } else { %>
