@@ -45,20 +45,20 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
   }
 }
 
- var connectingString = 'mongodb://127.0.0.1:27017/test4'
- if (env.OPENSHIFT_MONGODB_DB_URL || env.MONGODB_PORT) {
-  connectingString = env.MONGODB_PORT
- }
-mongoose.connect(connectingString,{
-  useMongoClient: true,
-  /* other options */
-});
-var db = mongoose.connection;
-db.on('connect',()=>{
-  console.log("database connevted at "+ connectingString);
-})
+//  var connectingString = 'mongodb://127.0.0.1:27017/test4'
+//  if (env.OPENSHIFT_MONGODB_DB_URL || env.MONGODB_PORT) {
+//   connectingString = env.MONGODB_PORT
+//  }
+// mongoose.connect(connectingString,{
+//   useMongoClient: true,
+//   /* other options */
+// });
+// var db = mongoose.connection;
+// db.on('connect',()=>{
+//   console.log("database connevted at "+ connectingString);
+// })
 
-/*
+
 var db = null,
     dbDetails = new Object();
 
@@ -85,41 +85,39 @@ var initDb = function(callback) {
     console.log('Connected to MongoDB at: %s', mongoURL);
   });
 };
-*/
+
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
    res.render('index.html');
 });
 
-app.post('/adduser', function (req, res) {
-  // try to initialize the db on every request if it's not already
-  var newUser = new UserModel({
-    username: req.body.username,
-    city: req.body.city,
-    password: req.body.password
-  })  
-  newUser.save((err, user)=>{
-    if (err) console.log(err);
-    res.json(user)
-  })
-});
+// app.post('/adduser', function (req, res) {
+//   // try to initialize the db on every request if it's not already
+//   var newUser = new UserModel({
+//     username: req.body.username,
+//     city: req.body.city,
+//     password: req.body.password
+//   })  
+//   newUser.save((err, user)=>{
+//     if (err) console.log(err);
+//     res.json(user)
+//   })
+// });
 
-app.get('/user', function (req, res) {
-  // try to initialize the db on every request if it's not already
- UserModel.find({}, (err, user)=>{
-  if (err) console.log(err);
+// app.get('/user', function (req, res) {
+//   // try to initialize the db on every request if it's not already
+//  UserModel.find({}, (err, user)=>{
+//   if (err) console.log(err);
 
-   res.json(user)
- })
-  
-  
-});
+//    res.json(user)
+//  }) 
+// });
 
-app.get('/process', function (req, res) {
-  // try to initialize the db on every request if it's not already
-  res.json(process.env)
-});
+// app.get('/process', function (req, res) {
+//   // try to initialize the db on every request if it's not already
+//   res.json(process.env)
+// });
 // error handling
 app.use(function(err, req, res, next){
   console.error(err.stack);
