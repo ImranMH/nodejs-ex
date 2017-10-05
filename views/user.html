@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>imran-test-user</title>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+
+</head>
+<body>
+	<nav class="navbar navbar-default " role="navigation">
+		<div class="container">
+			<a class="navbar-brand" href="/">Title</a>
+			<ul class="nav navbar-nav">
+				<li class="active">
+					<a href="/">Home</a>
+				</li>
+				<li>
+					<a href="/user">user</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<section class='container'>
+          <hgroup>
+            <h1>User page</h1>
+          </hgroup>
+
+
+    <div class="row">
+      <section class='col-xs-12 col-sm-6 col-md-6'>
+        <div class="userlist">
+          <ul class="user">
+            <% for(var i=0; i<users.length; i++) {%>
+            <li class="user">
+              <h3><%= users[i].username %></h3>
+              <p><%= users[i].password %></p>
+              <strong><%= users[i].city %></strong>
+            </li>
+            <% } %>
+          </ul>
+        </div>
+
+      </section>
+
+
+       <section class="col-xs-12 col-sm-6 col-md-6">
+
+            <h2>Add User to mongodb </h2>
+						.<form action="user/adduser" method="POST" role="form">
+							<legend>Add User Form</legend>
+						
+							<div class="form-group">
+								<label for="username">username</label>
+								<input type="text" class="form-control" id="username" name="username" placeholder="username">
+							</div>
+							<div class="form-group">
+								<label for="city">city</label>
+								<input type="text" name="city" class="form-control" id="city" placeholder="City">
+							</div>
+							<div class="form-group">
+								<label for="password">password</label>
+								<input type="text" name="password" class="form-control" id="password" placeholder="password">
+							</div>
+							
+						
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</form>
+            
+        
+      </section>
+    </div>
+
+    <footer>
+      <div class="logo"><a href="https://www.openshift.com/"></a></div>
+    </footer>
+  </section>
+	<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>
