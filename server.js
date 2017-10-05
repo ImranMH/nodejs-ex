@@ -139,7 +139,10 @@
 var express = require('express'),
     app     = express(),
     morgan  = require('morgan');
-    
+
+var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
+
 Object.assign=require('object-assign')
 
 app.engine('html', require('ejs').renderFile);
@@ -169,7 +172,7 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 
   }
 }
-var db = null,
+/*var db = null,
     dbDetails = new Object();
 
 var initDb = function(callback) {
@@ -191,39 +194,52 @@ var initDb = function(callback) {
 
     console.log('Connected to MongoDB at: %s', mongoURL);
   });
-};
+};*/
+
+
+var connectingString = 'mongodb://127.0.0.1:27017/test4'
+  mongoose.connect(connectingString,{
+    useMongoClient: true,
+    /* other options */
+  });
+if(process.env.MONGODB_PORT) {
+  mongoose.connect(mongoURL,{
+    useMongoClient: true,
+    /* other options */
+  });
+}
+
+var db = mongoose.connection;
+db.on('connected', function(){  
+    console.log("Mongoose default connection is open to ", mongoURL);
+ });
+db.on('error', function(err){
+     console.log("Mongoose default connection has occured "+err+" error");
+})
+db.on('disconnected', function(){
+     console.log("Mongoose default connection is disconnected");
+});
+process.on('SIGINT', function(){
+    mongoose.connection.close(function(){
+      console.log("Mongoose default connection is disconnected due to application termination");
+       process.exit(0);
+      });
+});
+
+
+
+
 
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
-  if (!db) {
-    initDb(function(err){});
-  }
-  if (db) {
-    var col = db.collection('counts');
-    // Create a document with request IP and current time of request
-    col.insert({ip: req.ip, date: Date.now()});
-    col.count(function(err, count){
-      res.render('index.html', { pageCountMessage : count, dbInfo: dbDetails });
-    });
-  } else {
-    res.render('index.html', { pageCountMessage : null});
-  }
+  res.render('index.html');
 });
 
 app.get('/pagecount', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
-  if (!db) {
-    initDb(function(err){});
-  }
-  if (db) {
-    db.collection('counts').count(function(err, count ){
-      res.send('{ pageCount: ' + count + '}');
-    });
-  } else {
-    res.send('{ pageCount: -1 }');
-  }
+  res.render('index.html');
 });
 
 
@@ -237,9 +253,9 @@ app.use(function(err, req, res, next){
   res.status(500).send('Something bad happened!');
 });
 
-initDb(function(err){
-  console.log('Error connecting to Mongo. Message:\n'+err);
-});
+// initDb(function(err){
+//   console.log('Error connecting to Mongo. Message:\n'+err);
+// });
 
 app.listen(port, ip);
 console.log('Server running on http://%s:%s', ip, port);
