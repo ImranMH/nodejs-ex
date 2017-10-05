@@ -142,11 +142,13 @@ var express = require('express'),
 
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
-
+var UserModel = require('./server/model/user.model')   
 Object.assign=require('object-assign')
 
 app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: false}))
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
@@ -209,6 +211,27 @@ if(process.env.MONGODB_PORT) {
   });
 }
 
+
+app.post('/adduser', function (req, res) {
+  // try to initialize the db on every request if it's not already
+  var newUser = new UserModel({
+    username: req.body.username,
+    city: req.body.city,
+    password: req.body.password
+  })  
+  newUser.save((err, user)=>{
+    if (err) console.log(err);
+    res.json(user)
+  })
+});
+app.get('/user', function (req, res) {
+  // try to initialize the db on every request if it's not already
+ UserModel.find({}, (err, user)=>{
+  if (err) console.log(err);
+
+   res.json(user)
+ }) 
+});
 var db = mongoose.connection;
 db.on('connected', function(){  
     console.log("Mongoose default connection is open to ", mongoURL);
