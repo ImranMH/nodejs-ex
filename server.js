@@ -45,36 +45,36 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 
 
 
-// var connectingString = 'mongodb://127.0.0.1:27017/test4'
-//   mongoose.connect(connectingString,{
-//     useMongoClient: true,
-//     /* other options */
-//   });
-// if(process.env.MONGODB_PORT) {
-//   mongoose.connect(mongoURL,{
-//     useMongoClient: true,
-//     /* other options */
-//   });
-// }
-// var db = mongoose.connection;
+var connectingString = 'mongodb://127.0.0.1:27017/test4'
+  mongoose.connect(connectingString,{
+    useMongoClient: true,
+    /* other options */
+  });
+if(process.env.MONGODB_PORT) {
+  mongoose.connect(mongoURL,{
+    useMongoClient: true,
+    /* other options */
+  });
+}
+var db = mongoose.connection;
 
 
 
-// db.on('connected', function(){  
-//     console.log("Mongoose default connection is open to ", mongoURL);
-//  });
-// db.on('error', function(err){
-//      console.log("Mongoose default connection has occured "+err+" error");
-// })
-// db.on('disconnected', function(){
-//      console.log("Mongoose default connection is disconnected");
-// });
-// process.on('SIGINT', function(){
-//     mongoose.connection.close(function(){
-//       console.log("Mongoose default connection is disconnected due to application termination");
-//        process.exit(0);
-//       });
-// });
+db.on('connected', function(){  
+    console.log("Mongoose default connection is open to ", mongoURL);
+ });
+db.on('error', function(err){
+     console.log("Mongoose default connection has occured "+err+" error");
+})
+db.on('disconnected', function(){
+     console.log("Mongoose default connection is disconnected");
+});
+process.on('SIGINT', function(){
+    mongoose.connection.close(function(){
+      console.log("Mongoose default connection is disconnected due to application termination");
+       process.exit(0);
+      });
+});
 
 
 
@@ -86,11 +86,7 @@ app.get('/', function (req, res) {
   res.render('index.html');
 });
 
-app.get('/pagecount', function (req, res) {
-  // try to initialize the db on every request if it's not already
-  // initialized.
-  res.render('index.html');
-});
+
 
 
 app.get('/process', function (req, res) {
