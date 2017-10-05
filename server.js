@@ -6,7 +6,7 @@ var express = require('express'),
 
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
-const env     = process.env;
+//const env     = process.env;
 // const port    = env.NODE_PORT || 3000
 // const ip    = env.NODE_IP || 'localhost'
  var UserModel = require('./server/model/user.model')   
