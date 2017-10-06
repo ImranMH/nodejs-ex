@@ -60,21 +60,21 @@ var db = mongoose.connection;
 
 
 
-db.on('connected', function(){  
-    console.log("Mongoose default connection is open to ", mongoURL);
- });
-db.on('error', function(err){
-     console.log("Mongoose default connection has occured "+err+" error");
-})
-db.on('disconnected', function(){
-     console.log("Mongoose default connection is disconnected");
-});
-process.on('SIGINT', function(){
-    mongoose.connection.close(function(){
-      console.log("Mongoose default connection is disconnected due to application termination");
-       process.exit(0);
-      });
-});
+// db.on('connected', function(){  
+//     console.log("Mongoose default connection is open to ", mongoURL);
+//  });
+// db.on('error', function(err){
+//      console.log("Mongoose default connection has occured "+err+" error");
+// })
+// db.on('disconnected', function(){
+//      console.log("Mongoose default connection is disconnected");
+// });
+// process.on('SIGINT', function(){
+//     mongoose.connection.close(function(){
+//       console.log("Mongoose default connection is disconnected due to application termination");
+//        process.exit(0);
+//       });
+// });
 
 
 
