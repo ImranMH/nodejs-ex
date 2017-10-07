@@ -87,7 +87,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/pagecount', function (req, res) {
-  console.log('pagecount');
+  res.send('pagecount')
 });
 
 
